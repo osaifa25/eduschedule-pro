@@ -3,7 +3,15 @@ require_once __DIR__ . '/../utils/token.php';
 
 function authentifierRequete() {
     $headers = getallheaders();
-    $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    
+    $authHeader = $headers['Authorization'] 
+               ?? $headers['authorization'] 
+               ?? $_SERVER['HTTP_AUTHORIZATION'] 
+               ?? '';
+
+    if (!$authHeader && isset($_GET['token'])) {
+        $authHeader = 'Bearer ' . urldecode($_GET['token']);
+    }
 
     if (!$authHeader) {
         http_response_code(401);

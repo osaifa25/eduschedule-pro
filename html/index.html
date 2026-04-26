@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSchedule Pro — ISGE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a56db;
+            --secondary: #7e3af2;
+            --accent: #ff5a1f;
+            --dark: #111827;
+            --light: #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary) !important;
+        }
+
+        .navbar-brand span {
+            color: var(--accent);
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #1a56db 0%, #7e3af2 100%);
+            color: white;
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -200px;
+            right: -100px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -100px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .hero .badge-isge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .btn-hero {
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* STATS */
+        .stats-section {
+            background: white;
+            padding: 60px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        /* MODULES */
+        .modules-section {
+            padding: 80px 0;
+            background: var(--light);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            height: 100%;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .module-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .module-card h5 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .module-card p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ACTEURS */
+        .acteurs-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .acteur-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: var(--light);
+            transition: all 0.3s;
+        }
+
+        .acteur-card:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .acteur-card:hover p {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        .acteur-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            background: white;
+        }
+
+        .acteur-card:hover .acteur-avatar {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* FLUX */
+        .flux-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a56db 0%, #7e3af2 100%);
+            color: white;
+        }
+
+        .flux-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .flux-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .flux-content h6 {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .flux-content p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 80px 0;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 40px 0 20px;
+        }
+
+        footer .footer-brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-calendar-check me-2"></i>EduSchedule<span>Pro</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <li class="nav-item"><a class="nav-link fw-500" href="#modules">Modules</a></li>
+                <li class="nav-item"><a class="nav-link fw-500" href="#acteurs">Acteurs</a></li>
+                <li class="nav-item"><a class="nav-link fw-500" href="#flux">Flux</a></li>
+                <li class="nav-item">
+                    <a class="btn btn-primary rounded-pill px-4" href="login.html">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7" data-aos="fade-right">
+                <span class="badge-isge">
+                    <i class="bi bi-building me-1"></i>ISGE — RST 2025-2026
+                </span>
+                <h1>Gérez vos emplois du temps <span style="color:#fbbf24">intelligemment</span></h1>
+                <p class="my-4">EduSchedule Pro digitalise la gestion pédagogique de votre établissement : planification, pointage QR, cahier de texte numérique et calcul automatique des vacations.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="login.html" class="btn btn-warning btn-hero text-dark">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Accéder à la plateforme
+                    </a>
+                    <a href="#modules" class="btn btn-outline-light btn-hero">
+                        <i class="bi bi-info-circle me-2"></i>En savoir plus
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center mt-5 mt-lg-0">
+                <div style="background:rgba(255,255,255,0.1); border-radius:24px; padding:40px;">
+                    <i class="bi bi-calendar3" style="font-size:8rem; opacity:0.9;"></i>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-around">
+                            <div class="text-center">
+                                <div style="font-size:1.8rem; font-weight:900;">5</div>
+                                <div style="font-size:0.8rem; opacity:0.8;">Modules</div>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-size:1.8rem; font-weight:900;">6</div>
+                                <div style="font-size:0.8rem; opacity:0.8;">Rôles</div>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-size:1.8rem; font-weight:900;">100%</div>
+                                <div style="font-size:0.8rem; opacity:0.8;">Digital</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Classes gérées</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Enseignants</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">QR</div>
+                    <div class="stat-label">Pointage sécurisé</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">PDF</div>
+                    <div class="stat-label">Export automatique</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules-section" id="modules">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">5 Modules intégrés</h2>
+            <p class="section-subtitle">Une plateforme complète qui couvre tout le cycle de vie d'une séance de cours</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">📅</div>
+                    <h5>Emploi du temps</h5>
+                    <p>Création et gestion des plannings hebdomadaires par classe avec détection automatique des conflits.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0fdf4;">📷</div>
+                    <h5>Pointage QR-Code</h5>
+                    <p>Validation numérique de la présence des enseignants via QR-Code sécurisé et à usage unique.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fdf4ff;">📝</div>
+                    <h5>Cahier de texte</h5>
+                    <p>Saisie du contenu pédagogique et signatures numériques par le délégué et l'enseignant.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff7ed;">💰</div>
+                    <h5>Fiche de vacation</h5>
+                    <p>Génération automatique des fiches comptables et calcul des montants à payer aux vacataires.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff1f2;">📊</div>
+                    <h5>Tableau de bord</h5>
+                    <p>Statistiques en temps réel, alertes et rapports pour les responsables de l'établissement.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0f9ff;">🔒</div>
+                    <h5>Sécurité & Rôles</h5>
+                    <p>Authentification JWT, gestion des rôles et permissions, journal d'audit complet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ACTEURS -->
+<section class="acteurs-section" id="acteurs">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Les acteurs du système</h2>
+            <p class="section-subtitle">Chaque utilisateur dispose d'un espace personnalisé selon son rôle</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">👨‍💼</div>
+                    <h6 class="fw-700">Administrateur</h6>
+                    <p class="text-muted small">Gestion globale</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">👨‍🏫</div>
+                    <h6 class="fw-700">Enseignant</h6>
+                    <p class="text-muted small">Pointage & séances</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">🧑‍🎓</div>
+                    <h6 class="fw-700">Délégué</h6>
+                    <p class="text-muted small">Cahier de texte</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">👮</div>
+                    <h6 class="fw-700">Surveillant</h6>
+                    <p class="text-muted small">Contrôle & visa</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">💼</div>
+                    <h6 class="fw-700">Comptable</h6>
+                    <p class="text-muted small">Validation paiement</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="acteur-card">
+                    <div class="acteur-avatar">📚</div>
+                    <h6 class="fw-700">Étudiant</h6>
+                    <p class="text-muted small">Consultation EDT</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FLUX -->
+<section class="flux-section" id="flux">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-800">Flux d'une séance de cours</h2>
+            <p style="opacity:0.8;">De la planification au paiement en quelques étapes</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="flux-step">
+                    <div class="flux-number">1</div>
+                    <div class="flux-content">
+                        <h6>Planification</h6>
+                        <p>L'admin crée le créneau et génère le QR Code unique</p>
+                    </div>
+                </div>
+                <div class="flux-step">
+                    <div class="flux-number">2</div>
+                    <div class="flux-content">
+                        <h6>Pointage QR</h6>
+                        <p>L'enseignant scanne le QR pour valider sa présence</p>
+                    </div>
+                </div>
+                <div class="flux-step">
+                    <div class="flux-number">3</div>
+                    <div class="flux-content">
+                        <h6>Cahier de texte</h6>
+                        <p>Le délégué saisit le contenu pédagogique en temps réel</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="flux-step">
+                    <div class="flux-number">4</div>
+                    <div class="flux-content">
+                        <h6>Signatures</h6>
+                        <p>Délégué et enseignant signent numériquement la fiche</p>
+                    </div>
+                </div>
+                <div class="flux-step">
+                    <div class="flux-number">5</div>
+                    <div class="flux-content">
+                        <h6>Fiche de vacation</h6>
+                        <p>Le système calcule automatiquement le montant dû</p>
+                    </div>
+                </div>
+                <div class="flux-step">
+                    <div class="flux-number">6</div>
+                    <div class="flux-content">
+                        <h6>Validation & Paiement</h6>
+                        <p>Surveillant et comptable valident, le chèque est émis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="fw-800 mb-3">Prêt à digitaliser votre établissement ?</h2>
+        <p class="text-secondary mb-4">Accédez à la plateforme et commencez à gérer vos emplois du temps dès maintenant</p>
+        <a href="login.html" class="btn btn-warning btn-hero text-dark">
+            <i class="bi bi-rocket-takeoff me-2"></i>Accéder à EduSchedule Pro
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="footer-brand mb-2">
+                    <i class="bi bi-calendar-check me-2"></i>EduSchedule Pro
+                </div>
+                <p class="small">Système intégré de gestion de l'emploi du temps et de suivi pédagogique.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6 class="text-white mb-3">Navigation</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#modules">Modules</a></li>
+                    <li><a href="#acteurs">Acteurs</a></li>
+                    <li><a href="#flux">Flux applicatif</a></li>
+                    <li><a href="login.html">Connexion</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6 class="text-white mb-3">Établissement</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="bi bi-building me-2"></i>ISGE — Institut Supérieur de Génie Électrique</li>
+                    <li><i class="bi bi-geo-alt me-2"></i>Ouagadougou, Burkina Faso</li>
+                    <li><i class="bi bi-calendar me-2"></i>Année 2025-2026</li>
+                </ul>
+            </div>
+        </div>
+        <hr style="border-color:#1e293b;">
+        <div class="text-center small">
+            <p class="mb-0">© 2026 EduSchedule Pro — ISGE RST | Projet Développement Web</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
