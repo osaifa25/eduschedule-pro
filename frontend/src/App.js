@@ -10,7 +10,7 @@ import VacationPage from './pages/VacationPage';
 import PointagePage from './pages/PointagePage';
 import GestionPage from './pages/GestionPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
-
+import RapportsPage from './pages/RapportsPage';
 // Protection des routes par rôle
 function PrivateRoute({ children, roles }) {
   const token      = localStorage.getItem('token');
@@ -38,6 +38,7 @@ export default function App() {
             <Route path="/pointage" element={<PrivateRoute roles={['enseignant']}><PointagePage /></PrivateRoute>} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="*" element={<Navigate to="/dashboard" />} />
+            <Route path="/rapports" element={<PrivateRoute roles={['administrateur','surveillant']}><RapportsPage /></PrivateRoute>} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

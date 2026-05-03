@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport — EduSchedule Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; line-height: 1.6; }
+
+        /* Page de garde */
+        .page-garde {
+            height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a56db 50%, #7e3af2 100%);
+            color: white; text-align: center; padding: 40px;
+            page-break-after: always;
+        }
+        .page-garde .logo {
+            width: 100px; height: 100px; background: rgba(255,255,255,0.15);
+            border-radius: 24px; display: flex; align-items: center;
+            justify-content: center; font-size: 3rem; margin: 0 auto 24px;
+        }
+        .page-garde h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 8px; }
+        .page-garde h1 span { color: #fbbf24; }
+        .page-garde .sous-titre { font-size: 1.1rem; opacity: 0.85; margin-bottom: 32px; }
+        .page-garde .info-box {
+            background: rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 24px 40px; margin-top: 24px;
+        }
+        .page-garde .info-box p { margin: 6px 0; font-size: 1rem; }
+        .page-garde .membres {
+            background: rgba(255,255,255,0.15); border-radius: 12px;
+            padding: 16px 32px; margin-top: 16px;
+        }
+        .page-garde .membres h3 { font-size: 1rem; margin-bottom: 12px; opacity: 0.8; }
+        .page-garde .membres p { font-size: 1rem; font-weight: 600; margin: 4px 0; }
+
+        /* Contenu */
+        .page { padding: 40px 60px; page-break-after: always; }
+        .page:last-child { page-break-after: avoid; }
+
+        h1.titre-section {
+            font-size: 1.8rem; font-weight: 800; color: #1a56db;
+            border-bottom: 3px solid #1a56db; padding-bottom: 8px;
+            margin-bottom: 24px;
+        }
+        h2 { font-size: 1.3rem; font-weight: 700; color: #1e3a5f; margin: 24px 0 12px; }
+        h3 { font-size: 1.1rem; font-weight: 600; color: #374151; margin: 16px 0 8px; }
+        p { margin-bottom: 12px; text-align: justify; }
+        ul, ol { margin: 12px 0 12px 24px; }
+        li { margin-bottom: 6px; }
+
+        /* Table des matières */
+        .toc { background: #f8fafc; border-radius: 12px; padding: 24px 32px; }
+        .toc h2 { color: #1a56db; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .toc-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #e2e8f0; }
+        .toc-item span { color: #64748b; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 10pt; }
+        th { background: #1a56db; color: white; padding: 10px 12px; text-align: left; }
+        td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+
+        /* Boîtes */
+        .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .success-box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+
+        /* Diagramme flux */
+        .flux { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+        .flux-step { display: flex; align-items: center; gap: 16px; }
+        .flux-num { width: 36px; height: 36px; border-radius: 50%; background: #1a56db; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .flux-content { background: #f8fafc; border-radius: 8px; padding: 12px 16px; flex: 1; }
+        .flux-arrow { width: 36px; text-align: center; color: #94a3b8; font-size: 1.2rem; margin: 4px 0; }
+
+        /* Architecture */
+        .arch-layer { background: #f8fafc; border-radius: 10px; padding: 16px; margin: 8px 0; border-left: 4px solid #3b82f6; }
+        .arch-layer h4 { color: #1a56db; margin-bottom: 8px; }
+
+        /* Captures */
+        .capture-box { background: #f1f5f9; border-radius: 12px; padding: 24px; text-align: center; margin: 16px 0; color: #64748b; border: 2px dashed #cbd5e1; }
+
+        /* Code */
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 9pt; color: #ef4444; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; margin: 12px 0; overflow-x: auto; font-size: 9pt; }
+
+        /* Impression */
+        @media print {
+            body { font-size: 10pt; }
+            .page-garde { height: 100vh; }
+            .page { padding: 20px 40px; }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== PAGE DE GARDE ========== -->
+<div class="page-garde">
+    <div class="logo">📅</div>
+    <h1>EduSchedule<span>Pro</span></h1>
+    <p class="sous-titre">Système Intégré de Gestion de l'Emploi du Temps<br>et de Suivi Pédagogique des Séances de Cours</p>
+
+    <div class="info-box">
+        <p>🏫 <strong>Institut Supérieur de Génie Électrique — ISGE</strong></p>
+        <p>📚 Module : Développement Web</p>
+        <p>👨‍🏫 Encadreur : Dr Wend-Panga Cédric BÉRÉ</p>
+        <p>📅 Année Universitaire : 2025 – 2026</p>
+    </div>
+
+    <div class="membres">
+        <h3>👥 Membres du Groupe</h3>
+        <p>1. KABORE Osaifa</p>
+        <p>2. ZAONGO Leila</p>
+        <p>3. SANKARA Moniqua</p>
+    </div>
+</div>
+
+<!-- ========== TABLE DES MATIÈRES ========== -->
+<div class="page">
+    <div class="toc">
+        <h2>📋 Table des Matières</h2>
+        <div class="toc-item"><span>1. Introduction et Contexte</span><span>3</span></div>
+        <div class="toc-item"><span>2. Analyse des Besoins</span><span>4</span></div>
+        <div class="toc-item"><span>3. Acteurs et Cas d'Utilisation</span><span>5</span></div>
+        <div class="toc-item"><span>4. Architecture Technique</span><span>7</span></div>
+        <div class="toc-item"><span>5. Modèle de Base de Données</span><span>9</span></div>
+        <div class="toc-item"><span>6. Description des Modules</span><span>11</span></div>
+        <div class="toc-item"><span>7. API REST — Endpoints</span><span>14</span></div>
+        <div class="toc-item"><span>8. Interfaces Utilisateur</span><span>16</span></div>
+        <div class="toc-item"><span>9. Difficultés et Solutions</span><span>18</span></div>
+        <div class="toc-item"><span>10. Répartition des Tâches</span><span>19</span></div>
+        <div class="toc-item"><span>11. Conclusion</span><span>20</span></div>
+    </div>
+</div>
+
+<!-- ========== 1. INTRODUCTION ========== -->
+<div class="page">
+    <h1 class="titre-section">1. Introduction et Contexte</h1>
+
+    <h2>1.1 Contexte</h2>
+    <p>Dans de nombreux établissements d'enseignement supérieur en Afrique francophone, la gestion des emplois du temps, le suivi des séances de cours et le calcul des vacations des enseignants reposent encore sur des processus manuels et des documents papier.</p>
+    <p>Cette situation engendre de nombreux problèmes : erreurs de calcul, pertes de documents, difficultés de traçabilité, retards dans le paiement des enseignants vacataires, et absence d'une vision consolidée de l'activité pédagogique.</p>
+
+    <h2>1.2 Problématique</h2>
+    <div class="warning-box">
+        <strong>Problèmes identifiés :</strong>
+        <ul>
+            <li>Gestion manuelle et peu fiable des emplois du temps</li>
+            <li>Absence de contrôle de présence des enseignants</li>
+            <li>Suivi difficile de l'avancement des programmes pédagogiques</li>
+            <li>Calcul manuel et source d'erreurs des vacations</li>
+            <li>Manque de traçabilité des activités pédagogiques</li>
+        </ul>
+    </div>
+
+    <h2>1.3 Objectifs du Projet</h2>
+    <p>EduSchedule Pro est une application web full-stack qui couvre l'intégralité du cycle de vie d'une séance de cours, depuis sa planification jusqu'au paiement de l'enseignant.</p>
+
+    <div class="success-box">
+        <strong>Objectifs principaux :</strong>
+        <ul>
+            <li>Digitaliser la gestion des emplois du temps</li>
+            <li>Mettre en place un système de pointage électronique via QR-Code</li>
+            <li>Assurer le suivi pédagogique via un cahier de texte numérique</li>
+            <li>Automatiser le calcul et la validation des fiches de vacation</li>
+            <li>Fournir des tableaux de bord avec statistiques en temps réel</li>
+        </ul>
+    </div>
+
+    <h2>1.4 Présentation de la Solution</h2>
+    <p>EduSchedule Pro s'articule autour de cinq modules interdépendants qui couvrent tout le cycle de vie d'une séance de cours :</p>
+
+    <div class="flux">
+        <div class="flux-step">
+            <div class="flux-num">1</div>
+            <div class="flux-content"><strong>Planification</strong> — L'admin crée l'emploi du temps et génère les QR Codes</div>
+        </div>
+        <div class="flux-arrow">↓</div>
+        <div class="flux-step">
+            <div class="flux-num">2</div>
+            <div class="flux-content"><strong>Pointage</strong> — L'enseignant scanne le QR Code pour valider sa présence</div>
+        </div>
+        <div class="flux-arrow">↓</div>
+        <div class="flux-step">
+            <div class="flux-num">3</div>
+            <div class="flux-content"><strong>Cahier de texte</strong> — Le délégué saisit le contenu pédagogique</div>
+        </div>
+        <div class="flux-arrow">↓</div>
+        <div class="flux-step">
+            <div class="flux-num">4</div>
+            <div class="flux-content"><strong>Signatures</strong> — Délégué et enseignant signent numériquement</div>
+        </div>
+        <div class="flux-arrow">↓</div>
+        <div class="flux-step">
+            <div class="flux-num">5</div>
+            <div class="flux-content"><strong>Vacation</strong> — Calcul automatique, validation et paiement</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== 2. ANALYSE DES BESOINS ========== -->
+<div class="page">
+    <h1 class="titre-section">2. Analyse des Besoins</h1>
+
+    <h2>2.1 Besoins Fonctionnels</h2>
+    <table>
+        <thead>
+            <tr><th>Module</th><th>Fonctionnalité</th><th>Priorité</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Emploi du temps</td><td>Création et gestion des plannings hebdomadaires</td><td>Haute</td></tr>
+            <tr><td>Emploi du temps</td><td>Détection automatique des conflits</td><td>Haute</td></tr>
+            <tr><td>Emploi du temps</td><td>Publication et export PDF</td><td>Moyenne</td></tr>
+            <tr><td>QR Code</td><td>Génération de QR Codes sécurisés par créneau</td><td>Haute</td></tr>
+            <tr><td>QR Code</td><td>Validation temporelle du scan</td><td>Haute</td></tr>
+            <tr><td>Cahier de texte</td><td>Saisie du contenu pédagogique</td><td>Haute</td></tr>
+            <tr><td>Cahier de texte</td><td>Signatures numériques</td><td>Haute</td></tr>
+            <tr><td>Vacation</td><td>Calcul automatique des montants</td><td>Haute</td></tr>
+            <tr><td>Vacation</td><td>Workflow de validation multi-niveaux</td><td>Haute</td></tr>
+            <tr><td>Dashboard</td><td>Statistiques et graphiques en temps réel</td><td>Moyenne</td></tr>
+            <tr><td>Dashboard</td><td>Notifications automatiques</td><td>Moyenne</td></tr>
+        </tbody>
+    </table>
+
+    <h2>2.2 Besoins Non Fonctionnels</h2>
+    <ul>
+        <li><strong>Sécurité :</strong> Authentification JWT, protection des routes par rôle</li>
+        <li><strong>Performance :</strong> Temps de réponse API inférieur à 500ms</li>
+        <li><strong>Responsive :</strong> Interface adaptée mobile et desktop</li>
+        <li><strong>Maintenabilité :</strong> Code commenté, architecture MVC côté PHP</li>
+        <li><strong>Portabilité :</strong> Fonctionne sur XAMPP/WAMP (Windows/Linux)</li>
+    </ul>
+
+    <h2>2.3 Technologies Utilisées</h2>
+    <table>
+        <thead>
+            <tr><th>Couche</th><th>Technologie</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>UI Statique</td><td>HTML5, CSS3</td><td>Structure et mise en page</td></tr>
+            <tr><td>Design</td><td>Bootstrap 5</td><td>Composants responsive</td></tr>
+            <tr><td>Frontend</td><td>React 18</td><td>SPA, gestion d'état, routing</td></tr>
+            <tr><td>Communication</td><td>API REST + JSON</td><td>Échange frontend/backend</td></tr>
+            <tr><td>Backend</td><td>PHP 8.2</td><td>Logique métier, API</td></tr>
+            <tr><td>Base de données</td><td>MySQL 8 (MariaDB)</td><td>Persistance des données</td></tr>
+            <tr><td>Authentification</td><td>JWT</td><td>Sécurisation des routes</td></tr>
+            <tr><td>PDF</td><td>TCPDF</td><td>Génération des fiches</td></tr>
+            <tr><td>Graphiques</td><td>Recharts</td><td>Visualisation des données</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ========== 3. ACTEURS ET CAS D'UTILISATION ========== -->
+<div class="page">
+    <h1 class="titre-section">3. Acteurs et Cas d'Utilisation</h1>
+
+    <h2>3.1 Acteurs du Système</h2>
+    <table>
+        <thead>
+            <tr><th>Acteur</th><th>Rôle</th><th>Permissions principales</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>👨‍💼 Administrateur</td><td>Gestion globale de la plateforme</td><td>CRUD complet, paramètres système</td></tr>
+            <tr><td>👨‍🏫 Enseignant</td><td>Pointage et validation des séances</td><td>Scan QR, signature fin de séance</td></tr>
+            <tr><td>🧑‍🎓 Délégué</td><td>Tenue du cahier de texte</td><td>Saisie contenu, signature délégué</td></tr>
+            <tr><td>👮 Surveillant</td><td>Contrôle et supervision</td><td>Vérification fiches, visa vacation</td></tr>
+            <tr><td>💼 Comptable</td><td>Traitement des vacations</td><td>Validation finale, approbation</td></tr>
+            <tr><td>📚 Étudiant</td><td>Consultation emploi du temps</td><td>Lecture seule</td></tr>
+        </tbody>
+    </table>
+
+    <h2>3.2 Diagramme de Cas d'Utilisation</h2>
+    <div class="capture-box">
+        <p style="font-size: 1.5rem; margin-bottom: 12px;">📊</p>
+        <p><strong>Diagramme UML — Cas d'utilisation</strong></p>
+        <p style="font-size: 0.9rem; margin-top: 8px;">Les cas d'utilisation principaux sont :<br>
+        Gérer emploi du temps • Pointer présence • Remplir cahier de texte<br>
+        Signer cahier • Générer vacation • Viser vacation • Approuver vacation</p>
+    </div>
+
+    <h2>3.3 Cas d'Utilisation Détaillés</h2>
+
+    <h3>UC1 — Gérer l'emploi du temps (Administrateur)</h3>
+    <div class="info-box">
+        <strong>Acteur principal :</strong> Administrateur<br>
+        <strong>Précondition :</strong> Être connecté avec le rôle administrateur<br>
+        <strong>Scénario nominal :</strong>
+        <ol style="margin-top: 8px;">
+            <li>L'administrateur accède à la page Emploi du temps</li>
+            <li>Il crée un nouveau planning en sélectionnant classe et semaine</li>
+            <li>Il ajoute les créneaux (matière, enseignant, salle, horaires)</li>
+            <li>Le système vérifie automatiquement les conflits</li>
+            <li>L'administrateur publie l'emploi du temps</li>
+            <li>Le système génère les QR Codes pour chaque créneau</li>
+        </ol>
+    </div>
+
+    <h3>UC2 — Pointer la présence (Enseignant)</h3>
+    <div class="info-box">
+        <strong>Acteur principal :</strong> Enseignant<br>
+        <strong>Précondition :</strong> Avoir un créneau planifié avec QR Code valide<br>
+        <strong>Scénario nominal :</strong>
+        <ol style="margin-top: 8px;">
+            <li>L'enseignant ouvre la page de pointage</li>
+            <li>Il scanne le QR Code affiché en salle (ou saisit le token)</li>
+            <li>Le système vérifie la validité du token et la fenêtre horaire</li>
+            <li>L'heure de début réelle est enregistrée</li>
+            <li>Un statut (à l'heure / retard) est attribué automatiquement</li>
+        </ol>
+    </div>
+
+    <h3>UC3 — Remplir le cahier de texte (Délégué)</h3>
+    <div class="info-box">
+        <strong>Acteur principal :</strong> Délégué de classe<br>
+        <strong>Précondition :</strong> La séance a été pointée par l'enseignant<br>
+        <strong>Scénario nominal :</strong>
+        <ol style="margin-top: 8px;">
+            <li>Le délégué accède à la page Cahiers de texte</li>
+            <li>Il crée un nouveau cahier pour le créneau en cours</li>
+            <li>Il saisit le titre, les points abordés et les travaux demandés</li>
+            <li>Il appose sa signature numérique sur le pad de signature</li>
+            <li>L'enseignant signe à son tour et clôture la séance</li>
+        </ol>
+    </div>
+</div>
+
+<!-- ========== 4. ARCHITECTURE TECHNIQUE ========== -->
+<div class="page">
+    <h1 class="titre-section">4. Architecture Technique</h1>
+
+    <h2>4.1 Vue d'Ensemble</h2>
+    <p>EduSchedule Pro suit une architecture client-serveur avec séparation stricte entre le frontend React (SPA) et le backend PHP (API REST). Une base de données MySQL assure la persistance des données.</p>
+
+    <div class="arch-layer">
+        <h4>Couche Présentation — Frontend React</h4>
+        <p>Application React 18 (SPA) avec React Router pour la navigation, Context API pour la gestion d'état global (Auth, Theme), et Axios pour les appels API. Bootstrap 5 assure le responsive design.</p>
+    </div>
+    <div class="arch-layer" style="border-left-color: #10b981;">
+        <h4>Couche Communication — API REST</h4>
+        <p>Échange de données au format JSON entre le frontend et le backend. Toutes les routes protégées nécessitent un header Authorization Bearer JWT.</p>
+    </div>
+    <div class="arch-layer" style="border-left-color: #f59e0b;">
+        <h4>Couche Logique Métier — Backend PHP</h4>
+        <p>API REST en PHP 8.2 organisée selon le pattern MVC. Gestion de l'authentification JWT, génération des QR Codes, export PDF (TCPDF), et validation des données.</p>
+    </div>
+    <div class="arch-layer" style="border-left-color: #8b5cf6;">
+        <h4>Couche Persistance — MySQL</h4>
+        <p>Base de données MySQL 8 (MariaDB 10.4) avec 14 tables organisées autour du concept central de la séance de cours. Clés étrangères pour garantir l'intégrité référentielle.</p>
+    </div>
+
+    <h2>4.2 Structure des Répertoires</h2>
+    <pre>
+eduschedule-pro/
+├── backend/
+│   ├── api/          ← Endpoints REST PHP
+│   │   ├── auth.php
+│   │   ├── classes.php
+│   │   ├── enseignants.php
+│   │   ├── emploi_temps.php
+│   │   ├── creneaux.php
+│   │   ├── pointages.php
+│   │   ├── cahiers.php
+│   │   ├── vacations.php
+│   │   ├── notifications.php
+│   │   └── pdf.php
+│   ├── config/       ← Configuration
+│   │   ├── cors.php
+│   │   ├── database.php
+│   │   └── jwt.php
+│   ├── middleware/   ← Authentification JWT
+│   │   └── jwt_helper.php
+│   ├── utils/        ← Utilitaires
+│   │   └── token.php
+│   └── vendor/       ← Dépendances Composer
+├── frontend/
+│   └── src/
+│       ├── components/  ← Composants réutilisables
+│       │   └── NotifBell.jsx
+│       ├── context/     ← Contextes React
+│       │   ├── AuthContext.jsx
+│       │   └── ThemeContext.jsx
+│       ├── pages/       ← Pages de l'application
+│       │   ├── LoginPage.jsx
+│       │   ├── DashboardLayout.jsx
+│       │   ├── EmploiTempsPage.jsx
+│       │   ├── GestionPage.jsx
+│       │   ├── CahierPage.jsx
+│       │   ├── VacationPage.jsx
+│       │   └── PointagePage.jsx
+│       └── utils/
+│           └── api.js
+├── html/
+│   ├── index.html    ← Page d'accueil statique
+│   └── login.html    ← Page login statique
+└── database/
+    └── eduschedule_pro.sql</pre>
+
+    <h2>4.3 Flux d'Authentification JWT</h2>
+    <div class="info-box">
+        <ol>
+            <li>L'utilisateur envoie email + mot de passe via POST /api/auth.php?action=login</li>
+            <li>Le serveur vérifie les credentials avec password_verify()</li>
+            <li>Si valide, le serveur génère un token JWT signé avec HMAC-SHA256</li>
+            <li>Le token (valide 24h) est retourné au client</li>
+            <li>Le client stocke le token dans localStorage</li>
+            <li>Chaque requête suivante inclut le token dans le header Authorization</li>
+            <li>Le middleware jwt_helper.php vérifie la signature et l'expiration</li>
+        </ol>
+    </div>
+</div>
+
+<!-- ========== 5. BASE DE DONNÉES ========== -->
+<div class="page">
+    <h1 class="titre-section">5. Modèle de Base de Données</h1>
+
+    <h2>5.1 Description des Tables</h2>
+    <table>
+        <thead>
+            <tr><th>Table</th><th>Description</th><th>Colonnes principales</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>classes</code></td><td>Référentiel des classes</td><td>id, code, libelle, niveau, annee_academique</td></tr>
+            <tr><td><code>matieres</code></td><td>Référentiel des matières</td><td>id, code, libelle, volume_horaire_total, coefficient</td></tr>
+            <tr><td><code>enseignants</code></td><td>Données des enseignants</td><td>id, matricule, nom, prenom, email, statut, taux_horaire</td></tr>
+            <tr><td><code>salles</code></td><td>Référentiel des salles</td><td>id, code, capacite, equipements, batiment</td></tr>
+            <tr><td><code>utilisateurs</code></td><td>Comptes de connexion</td><td>id, email, mot_de_passe_hash, role, id_lien, actif</td></tr>
+            <tr><td><code>emploi_temps</code></td><td>En-têtes des plannings</td><td>id, id_classe, semaine_debut, statut_publication</td></tr>
+            <tr><td><code>creneaux</code></td><td>Créneaux planifiés + QR</td><td>id, id_emploi_temps, jour, heure_debut, qr_token</td></tr>
+            <tr><td><code>pointages</code></td><td>Log des scans QR</td><td>id, id_creneau, heure_pointage_reelle, statut</td></tr>
+            <tr><td><code>cahiers_texte</code></td><td>Cahier de texte par séance</td><td>id, id_creneau, titre_cours, contenu_json, statut</td></tr>
+            <tr><td><code>signatures</code></td><td>Signatures numériques</td><td>id, id_cahier, type_signataire, signature_base64</td></tr>
+            <tr><td><code>travaux_demandes</code></td><td>Devoirs et exercices</td><td>id, id_cahier, description, date_limite, type</td></tr>
+            <tr><td><code>vacations</code></td><td>Fiches de vacation</td><td>id, id_enseignant, mois, annee, montant_brut, statut</td></tr>
+            <tr><td><code>vacation_lignes</code></td><td>Détail des séances</td><td>id, id_vacation, duree_heures, taux, montant</td></tr>
+            <tr><td><code>logs_activite</code></td><td>Journal d'audit</td><td>id, id_utilisateur, action, ip, date_heure</td></tr>
+        </tbody>
+    </table>
+
+    <h2>5.2 Relations Principales</h2>
+    <div class="info-box">
+        <ul>
+            <li><strong>emploi_temps</strong> → classes (une classe a plusieurs plannings)</li>
+            <li><strong>creneaux</strong> → emploi_temps, matieres, enseignants, salles</li>
+            <li><strong>pointages</strong> → creneaux (un pointage par créneau)</li>
+            <li><strong>cahiers_texte</strong> → creneaux, utilisateurs (délégué)</li>
+            <li><strong>signatures</strong> → cahiers_texte, utilisateurs</li>
+            <li><strong>vacations</strong> → enseignants</li>
+            <li><strong>vacation_lignes</strong> → vacations, creneaux</li>
+        </ul>
+    </div>
+
+    <h2>5.3 Données de Démonstration</h2>
+    <table>
+        <thead>
+            <tr><th>Entité</th><th>Nombre</th><th>Exemples</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Classes</td><td>4</td><td>L1-RST, L2-RST, L3-RST, M1-RST</td></tr>
+            <tr><td>Matières</td><td>5</td><td>Dev Web, Réseaux, BD, Algo, Systèmes</td></tr>
+            <tr><td>Enseignants</td><td>5</td><td>BERE, KABORE, OUEDRAOGO, TRAORE, ZONGO</td></tr>
+            <tr><td>Salles</td><td>4</td><td>A101, A102, B201, LABO1</td></tr>
+            <tr><td>Utilisateurs</td><td>6</td><td>admin, enseignant×2, délégué, surveillant, comptable</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ========== 6. MODULES ========== -->
+<div class="page">
+    <h1 class="titre-section">6. Description des Modules</h1>
+
+    <h2>6.1 Module 1 — Gestion de l'Emploi du Temps</h2>
+    <p>Ce module permet à l'administrateur de créer et gérer les plannings hebdomadaires par classe. Il inclut la détection automatique des conflits (enseignant déjà occupé ou salle déjà prise).</p>
+
+    <div class="success-box">
+        <strong>Fonctionnalités implémentées :</strong>
+        <ul>
+            <li>Création de plannings hebdomadaires avec créneaux détaillés</li>
+            <li>Détection automatique des conflits enseignant/salle</li>
+            <li>Publication / dépublication des emplois du temps</li>
+            <li>Modification et suppression des créneaux</li>
+            <li>Génération des QR Codes uniques par créneau</li>
+            <li>Vue grille hebdomadaire (Lundi → Samedi)</li>
+            <li>Filtrage par classe</li>
+        </ul>
+    </div>
+
+    <h2>6.2 Module 2 — Pointage QR-Code</h2>
+    <p>Ce module gère le début officiel d'une séance via un système de QR-Code sécurisé. Chaque QR Code est unique, chiffré avec un token HMAC, et expire après une fenêtre horaire définie.</p>
+
+    <div class="success-box">
+        <strong>Fonctionnalités implémentées :</strong>
+        <ul>
+            <li>Génération de QR Codes sécurisés (token unique 32 caractères hex)</li>
+            <li>Scan via caméra (html5-qrcode) ou saisie manuelle du token</li>
+            <li>Validation temporelle (fenêtre de ±15 minutes)</li>
+            <li>Détection automatique des retards (> 15 min)</li>
+            <li>QR Code à usage unique (invalidé après scan)</li>
+            <li>Log de tous les pointages (réussis et échoués)</li>
+        </ul>
+    </div>
+
+    <h2>6.3 Module 3 — Cahier de Texte Numérique</h2>
+    <p>Le cahier de texte est le document central du suivi pédagogique. Il est rempli par le délégué et co-signé numériquement par le délégué et l'enseignant via un pad de signature HTML5.</p>
+
+    <div class="success-box">
+        <strong>Fonctionnalités implémentées :</strong>
+        <ul>
+            <li>Saisie du titre, contenu et travaux demandés</li>
+            <li>Signatures numériques sur canvas HTML5 (signature_pad)</li>
+            <li>Workflow : brouillon → signé délégué → clôturé</li>
+            <li>Verrouillage après clôture (plus de modification possible)</li>
+            <li>Export PDF de chaque fiche (TCPDF)</li>
+            <li>Visualisation des signatures enregistrées</li>
+        </ul>
+    </div>
+
+    <h2>6.4 Module 4 — Fiche de Vacation et Paiement</h2>
+    <p>La fiche de vacation est générée automatiquement à partir des cahiers de texte clôturés. Elle constitue la pièce justificative comptable pour le paiement des enseignants vacataires.</p>
+
+    <div class="success-box">
+        <strong>Fonctionnalités implémentées :</strong>
+        <ul>
+            <li>Génération automatique du montant (durée × taux horaire)</li>
+            <li>Workflow de validation : généré → visé (surveillant) → approuvé (comptable)</li>
+            <li>Export PDF comptable avec tableau des séances</li>
+            <li>Filtrage par mois et année</li>
+            <li>Historique des validations</li>
+        </ul>
+    </div>
+
+    <h2>6.5 Module 5 — Tableau de Bord et Statistiques</h2>
+    <p>Chaque rôle dispose d'un tableau de bord personnalisé avec des KPIs adaptés à ses responsabilités.</p>
+
+    <div class="success-box">
+        <strong>Fonctionnalités implémentées :</strong>
+        <ul>
+            <li>KPIs en temps réel (classes, enseignants, séances, cahiers, vacations)</li>
+            <li>Graphique BarChart — séances par jour de la semaine (Recharts)</li>
+            <li>Graphique PieChart — statut des fiches de vacation</li>
+            <li>Notifications automatiques selon le rôle (mise à jour toutes les 30s)</li>
+            <li>Mode sombre / clair (persisté dans localStorage)</li>
+            <li>Sidebar rétractable avec navigation par rôle</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========== 7. API REST ========== -->
+<div class="page">
+    <h1 class="titre-section">7. API REST — Principaux Endpoints</h1>
+
+    <p>Le backend PHP expose une API REST consommée par React. Toutes les réponses sont en JSON. Les routes protégées nécessitent un header <code>Authorization: Bearer {token}</code>.</p>
+
+    <h2>7.1 Authentification</h2>
+    <table>
+        <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th><th>Auth</th></tr></thead>
+        <tbody>
+            <tr><td>POST</td><td>/api/auth.php?action=login</td><td>Connexion — retourne JWT</td><td>Non</td></tr>
+            <tr><td>POST</td><td>/api/auth.php?action=logout</td><td>Déconnexion</td><td>Oui</td></tr>
+        </tbody>
+    </table>
+
+    <h2>7.2 Référentiels</h2>
+    <table>
+        <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td>GET</td><td>/api/classes.php</td><td>Liste des classes</td></tr>
+            <tr><td>POST</td><td>/api/classes.php</td><td>Créer une classe</td></tr>
+            <tr><td>PUT</td><td>/api/classes.php?id={id}</td><td>Modifier une classe</td></tr>
+            <tr><td>DELETE</td><td>/api/classes.php?id={id}</td><td>Supprimer une classe</td></tr>
+            <tr><td>GET</td><td>/api/enseignants.php</td><td>Liste des enseignants</td></tr>
+            <tr><td>POST</td><td>/api/enseignants.php</td><td>Créer un enseignant</td></tr>
+            <tr><td>PUT</td><td>/api/enseignants.php?id={id}</td><td>Modifier un enseignant</td></tr>
+            <tr><td>DELETE</td><td>/api/enseignants.php?id={id}</td><td>Supprimer un enseignant</td></tr>
+        </tbody>
+    </table>
+
+    <h2>7.3 Emploi du Temps</h2>
+    <table>
+        <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td>GET</td><td>/api/emploi_temps.php</td><td>Liste des emplois du temps</td></tr>
+            <tr><td>POST</td><td>/api/emploi_temps.php</td><td>Créer un planning</td></tr>
+            <tr><td>PUT</td><td>/api/emploi_temps.php?action=publier&id={id}</td><td>Publier un planning</td></tr>
+            <tr><td>DELETE</td><td>/api/emploi_temps.php?id={id}</td><td>Supprimer un planning</td></tr>
+            <tr><td>GET</td><td>/api/qrcode.php?id={id}</td><td>Générer QR Code</td></tr>
+            <tr><td>POST</td><td>/api/pointages.php?action=scan</td><td>Valider un scan QR</td></tr>
+            <tr><td>PUT</td><td>/api/creneaux.php?id={id}</td><td>Modifier un créneau</td></tr>
+            <tr><td>DELETE</td><td>/api/creneaux.php?id={id}</td><td>Supprimer un créneau</td></tr>
+        </tbody>
+    </table>
+
+    <h2>7.4 Cahiers et Vacations</h2>
+    <table>
+        <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td>GET</td><td>/api/cahiers.php</td><td>Liste des cahiers</td></tr>
+            <tr><td>POST</td><td>/api/cahiers.php</td><td>Créer un cahier</td></tr>
+            <tr><td>POST</td><td>/api/cahiers.php?action=signer&id={id}</td><td>Signer un cahier</td></tr>
+            <tr><td>POST</td><td>/api/cahiers.php?action=cloture&id={id}</td><td>Clôturer une séance</td></tr>
+            <tr><td>GET</td><td>/api/vacations.php</td><td>Liste des vacations</td></tr>
+            <tr><td>POST</td><td>/api/vacations.php?action=generer</td><td>Générer une fiche</td></tr>
+            <tr><td>POST</td><td>/api/vacations.php?action=valider&id={id}</td><td>Viser (surveillant)</td></tr>
+            <tr><td>POST</td><td>/api/vacations.php?action=approuver&id={id}</td><td>Approuver (comptable)</td></tr>
+            <tr><td>GET</td><td>/api/pdf.php?type=vacation&id={id}</td><td>Télécharger PDF vacation</td></tr>
+            <tr><td>GET</td><td>/api/pdf.php?type=cahier&id={id}</td><td>Télécharger PDF cahier</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ========== 8. INTERFACES ========== -->
+<div class="page">
+    <h1 class="titre-section">8. Interfaces Utilisateur</h1>
+
+    <h2>8.1 Page d'Accueil (HTML statique)</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">🏠</p>
+        <p><strong>Page d'accueil — html/index.html</strong></p>
+        <p style="font-size: 0.9rem;">Page HTML5/CSS3/Bootstrap 5 présentant les 5 modules,<br>les acteurs du système et le flux applicatif.<br>Accessible sur : http://localhost/eduschedule-pro/html/index.html</p>
+    </div>
+
+    <h2>8.2 Page de Connexion</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">🔐</p>
+        <p><strong>Page de connexion — LoginPage.jsx</strong></p>
+        <p style="font-size: 0.9rem;">Formulaire de connexion avec validation, gestion JWT,<br>et redirection automatique selon le rôle de l'utilisateur.</p>
+    </div>
+
+    <h2>8.3 Tableau de Bord Administrateur</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">📊</p>
+        <p><strong>Dashboard Admin — DashboardLayout.jsx</strong></p>
+        <p style="font-size: 0.9rem;">KPIs, graphiques Recharts (BarChart séances/jour, PieChart vacations),<br>notifications temps réel, mode sombre/clair, sidebar rétractable.</p>
+    </div>
+
+    <h2>8.4 Emploi du Temps</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">📅</p>
+        <p><strong>Emploi du Temps — EmploiTempsPage.jsx</strong></p>
+        <p style="font-size: 0.9rem;">Grille hebdomadaire interactive avec créneaux colorés,<br>boutons QR Code, modifier et supprimer par créneau.</p>
+    </div>
+
+    <h2>8.5 Cahier de Texte</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">📝</p>
+        <p><strong>Cahier de Texte — CahierPage.jsx</strong></p>
+        <p style="font-size: 0.9rem;">Formulaire de saisie avec pad de signature HTML5 (canvas),<br>workflow de validation et export PDF.</p>
+    </div>
+
+    <h2>8.6 Fiches de Vacation</h2>
+    <div class="capture-box">
+        <p style="font-size: 2rem;">💰</p>
+        <p><strong>Vacations — VacationPage.jsx</strong></p>
+        <p style="font-size: 0.9rem;">Génération automatique des fiches, workflow de validation multi-niveaux<br>(surveillant → comptable), export PDF comptable.</p>
+    </div>
+</div>
+
+<!-- ========== 9. DIFFICULTÉS ========== -->
+<div class="page">
+    <h1 class="titre-section">9. Difficultés Rencontrées et Solutions</h1>
+
+    <table>
+        <thead>
+            <tr><th>Difficulté</th><th>Cause</th><th>Solution Apportée</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>MySQL ne démarrait pas dans XAMPP</td>
+                <td>Base de données corrompue suite à un arrêt brutal</td>
+                <td>Suppression du dossier corrompu dans mysql/data/ et réimportation du script SQL</td>
+            </tr>
+            <tr>
+                <td>Erreur CORS entre React (port 3001) et PHP</td>
+                <td>React avait changé de port automatiquement</td>
+                <td>Modification de cors.php pour accepter dynamiquement tous les origines localhost</td>
+            </tr>
+            <tr>
+                <td>Token JWT non transmis pour le téléchargement PDF</td>
+                <td>La méthode window.open() ne transmet pas les headers HTTP</td>
+                <td>Passage du token en paramètre GET et lecture côté PHP avec $_GET['token']</td>
+            </tr>
+            <tr>
+                <td>La bibliothèque signature_pad ne se chargeait pas</td>
+                <td>Problème de chunk JavaScript lors du chargement dynamique</td>
+                <td>Réinstallation via npm install signature_pad --save</td>
+            </tr>
+            <tr>
+                <td>Composer non installé sur Windows</td>
+                <td>Outil non préinstallé avec XAMPP</td>
+                <td>Téléchargement et installation de Composer depuis getcomposer.org</td>
+            </tr>
+            <tr>
+                <td>Extension zip manquante pour TCPDF</td>
+                <td>Extension PHP zip désactivée dans php.ini</td>
+                <td>Installation depuis source via Composer avec --prefer-source</td>
+            </tr>
+            <tr>
+                <td>LocalStorage non partagé entre HTML et React</td>
+                <td>Domaines différents (localhost vs localhost:3000)</td>
+                <td>Passage du token via paramètres URL avec page AuthCallback dans React</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ========== 10. RÉPARTITION DES TÂCHES ========== -->
+<div class="page">
+    <h1 class="titre-section">10. Répartition des Tâches</h1>
+
+    <table>
+        <thead>
+            <tr><th>Tâche</th><th>KABORE Osaifa</th><th>ZAONGO Leila</th><th>SANKARA Moniqua</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Analyse des besoins et UML</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Schéma base de données (SQL)</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Configuration XAMPP et Git</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Backend PHP — Auth JWT</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Backend PHP — Emploi du temps</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Backend PHP — QR Code & Pointage</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Backend PHP — Cahier de texte</td><td></td><td>✅</td><td></td></tr>
+            <tr><td>Backend PHP — Vacations</td><td></td><td>✅</td><td></td></tr>
+            <tr><td>Backend PHP — Export PDF</td><td></td><td>✅</td><td></td></tr>
+            <tr><td>Frontend React — Auth & Routing</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Frontend React — Dashboard & Stats</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Frontend React — Emploi du temps</td><td></td><td></td><td>✅</td></tr>
+            <tr><td>Frontend React — Cahier de texte</td><td></td><td></td><td>✅</td></tr>
+            <tr><td>Frontend React — Vacations</td><td></td><td></td><td>✅</td></tr>
+            <tr><td>Pages HTML statiques</td><td></td><td>✅</td><td></td></tr>
+            <tr><td>Notifications temps réel</td><td>✅</td><td></td><td></td></tr>
+            <tr><td>Mode sombre</td><td></td><td></td><td>✅</td></tr>
+            <tr><td>Tests et débogage</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Documentation</td><td>✅</td><td>✅</td><td>✅</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Planning de Réalisation</h2>
+    <table>
+        <thead>
+            <tr><th>Période</th><th>Phase</th><th>Travaux réalisés</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Jours 1-5</td><td>Analyse & Conception</td><td>Cahier des charges, maquettes, schéma BDD, diagrammes UML</td></tr>
+            <tr><td>Jours 6-10</td><td>Base & Structure</td><td>Git, structure dossiers, script SQL, pages HTML/Bootstrap</td></tr>
+            <tr><td>Jours 11-18</td><td>Backend PHP</td><td>Auth JWT, emploi du temps, QR Code, pointage, cahiers</td></tr>
+            <tr><td>Jours 19-25</td><td>Frontend React</td><td>Dashboard, emploi du temps, cahier, vacations, PDF</td></tr>
+            <tr><td>Jours 26-30</td><td>Finalisation</td><td>Tests, corrections, mode sombre, notifications, documentation</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ========== 11. CONCLUSION ========== -->
+<div class="page">
+    <h1 class="titre-section">11. Conclusion</h1>
+
+    <h2>11.1 Bilan du Projet</h2>
+    <p>Le projet EduSchedule Pro a été réalisé avec succès en répondant à l'ensemble des exigences du cahier des charges. Les cinq modules ont été implémentés et testés :</p>
+
+    <div class="success-box">
+        <strong>Modules réalisés ✅</strong>
+        <ul>
+            <li>Module 1 — Gestion de l'emploi du temps avec détection des conflits</li>
+            <li>Module 2 — Pointage QR-Code sécurisé</li>
+            <li>Module 3 — Cahier de texte numérique avec signatures</li>
+            <li>Module 4 — Fiche de vacation avec workflow de validation</li>
+            <li>Module 5 — Tableau de bord avec graphiques et notifications</li>
+        </ul>
+    </div>
+
+    <h2>11.2 Fonctionnalités Bonus Réalisées</h2>
+    <div class="info-box">
+        <ul>
+            <li>✅ Mode sombre / clair persisté</li>
+            <li>✅ Notifications en temps réel (mise à jour toutes les 30 secondes)</li>
+            <li>✅ Export PDF des fiches vacation et cahiers de texte (TCPDF)</li>
+            <li>✅ Page d'accueil HTML statique avec animations</li>
+            <li>✅ Splash screen au démarrage de l'application</li>
+            <li>✅ CRUD complet sur tous les référentiels</li>
+        </ul>
+    </div>
+
+    <h2>11.3 Perspectives d'Amélioration</h2>
+    <ul>
+        <li>Déploiement en ligne sur un serveur de production</li>
+        <li>Application mobile native (React Native)</li>
+        <li>Système de messagerie interne entre acteurs</li>
+        <li>Export Excel des statistiques</li>
+        <li>Intégration d'un calendrier interactif avec drag & drop</li>
+        <li>Système de rappels par email/SMS</li>
+    </ul>
+
+    <h2>11.4 Compétences Acquises</h2>
+    <table>
+        <thead><tr><th>Compétence</th><th>Niveau</th></tr></thead>
+        <tbody>
+            <tr><td>Développement API REST en PHP</td><td>⭐⭐⭐⭐</td></tr>
+            <tr><td>React 18 et hooks</td><td>⭐⭐⭐⭐</td></tr>
+            <tr><td>Authentification JWT</td><td>⭐⭐⭐⭐</td></tr>
+            <tr><td>Bootstrap 5 responsive</td><td>⭐⭐⭐⭐⭐</td></tr>
+            <tr><td>Modélisation base de données</td><td>⭐⭐⭐⭐</td></tr>
+            <tr><td>Gestion de projet avec Git</td><td>⭐⭐⭐</td></tr>
+            <tr><td>Génération PDF (TCPDF)</td><td>⭐⭐⭐</td></tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 40px; text-align: center; padding: 24px; background: linear-gradient(135deg, #1e3a5f, #1a56db); border-radius: 16px; color: white;">
+        <h3 style="margin-bottom: 8px;">EduSchedule Pro — ISGE RST 2025-2026</h3>
+        <p>KABORE Osaifa • ZAONGO Leila • SANKARA Moniqua</p>
+        <p style="opacity: 0.7; margin-top: 8px;">Module Développement Web — Dr Wend-Panga Cédric BÉRÉ</p>
+    </div>
+</div>
+
+</body>
+</html>

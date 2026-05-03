@@ -44,6 +44,7 @@ export default function DashboardLayout() {
       { label: 'Emploi du temps',      path: '/emploi-temps', icon: '📅' },
       { label: 'Cahiers de texte',     path: '/cahiers',      icon: '📝' },
       { label: 'Vacations',            path: '/vacations',    icon: '💰' },
+      { label: 'Rapports Excel',       path: '/rapports',     icon: '📊' },
     ],
     enseignant: [
       { label: 'Tableau de bord', path: '/dashboard',  icon: '📊' },
