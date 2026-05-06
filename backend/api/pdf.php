@@ -268,7 +268,9 @@ if ($type === 'vacation' && $id > 0) {
     $pdf->Output('cahier_' . $cahier['classe'] . '_' . $cahier['jour'] . '.pdf', 'D');
     $conn->close();
 
-} else {
+}
+
+ else {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Type ou ID invalide']);
 }
