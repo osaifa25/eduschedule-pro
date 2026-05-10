@@ -182,8 +182,8 @@ export default function EmploiTempsPage() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ background: 'white', borderRadius: 16, padding: 32, textAlign: 'center', maxWidth: 360 }}>
             <h5 style={{ fontWeight: 700, marginBottom: 12 }}>📷 QR Code de la séance</h5>
-          <QRCode 
-  value={qrInfo.token} 
+    <QRCode 
+  value={qrInfo.qr_url || qrInfo.token} 
   size={200} 
   style={{ marginBottom: 12 }}
 />
