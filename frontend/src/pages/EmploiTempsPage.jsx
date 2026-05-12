@@ -67,7 +67,7 @@ export default function EmploiTempsPage() {
   const [creneauModif, setCreneauModif] = useState(null);
   const [qrInfo,       setQrInfo]       = useState(null);
   const [emploiActif,  setEmploiActif]  = useState(null);
-
+  const [emploiModif, setEmploiModif] = useState(null);
   const [form, setForm] = useState({
     id_classe: '', semaine_debut: '', creneaux: []
   });
@@ -118,12 +118,27 @@ export default function EmploiTempsPage() {
     } catch (err) { alert(err.response?.data?.message || 'Erreur'); }
   };
 
+
   const publier        = async (id) => { await api.put(`/emploi_temps.php?action=publier&id=${id}`); charger(); };
   const supprimerEmploi = async (id) => {
     if (!window.confirm('Supprimer cet emploi du temps ?')) return;
     await api.delete(`/emploi_temps.php?id=${id}`);
     setEmploiActif(null); charger();
   };
+  const modifierEmploi = async () => {
+  if (!emploiModif) return;
+  try {
+    await api.put(`/emploi_temps.php?action=modifier&id=${emploiModif.id}`, {
+      id_classe: emploiModif.id_classe,
+      semaine_debut: emploiModif.semaine_debut,
+    });
+    alert('Emploi du temps modifié !');
+    setEmploiModif(null);
+    charger();
+  } catch (err) {
+    alert(err.response?.data?.message || 'Erreur lors de la modification');
+  }
+};
   const genererQR      = async (id) => {
     try { const r = await api.get(`/qrcode.php?id=${id}`); setQrInfo(r.data); }
     catch { alert('Erreur QR'); }
@@ -193,6 +208,36 @@ export default function EmploiTempsPage() {
           </div>
         </div>
       )}
+      {/* ===== MODAL MODIFICATION EMPLOI DU TEMPS ===== */}
+{emploiModif && (
+  <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ background: 'white', borderRadius: 16, padding: 32, width: '90%', maxWidth: 500 }}>
+      <h5 style={{ fontWeight: 700, marginBottom: 20 }}>✏️ Modifier l'emploi du temps</h5>
+      <div className="row g-3">
+        <div className="col-12">
+          <label className="form-label" style={{ fontSize: '0.85rem' }}>Classe</label>
+          <select className="form-select" value={emploiModif.id_classe}
+            onChange={e => setEmploiModif(m => ({ ...m, id_classe: e.target.value }))}>
+            {classes.map(c => <option key={c.id} value={c.id}>{c.libelle}</option>)}
+          </select>
+        </div>
+        <div className="col-12">
+          <label className="form-label" style={{ fontSize: '0.85rem' }}>Semaine du (lundi)</label>
+          <input type="date" className="form-control" value={emploiModif.semaine_debut}
+            onChange={e => setEmploiModif(m => ({ ...m, semaine_debut: e.target.value }))} />
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
+        <button onClick={() => setEmploiModif(null)} style={{ background: '#f1f5f9', border: 'none', borderRadius: 8, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}>
+          Annuler
+        </button>
+        <button onClick={modifierEmploi} style={{ background: '#1a56db', color: 'white', border: 'none', borderRadius: 8, padding: '10px 20px', fontWeight: 600, cursor: 'pointer' }}>
+          💾 Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* ===== MODAL MODIFICATION ===== */}
       {creneauModif && (
@@ -393,6 +438,13 @@ export default function EmploiTempsPage() {
                     {emploiSelectionne.statut_publication === 'brouillon' && (
                       <button onClick={() => publier(emploiSelectionne.id)} style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #86efac', borderRadius: 8, padding: '4px 12px', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600, fontFamily: 'Segoe UI, sans-serif' }}>📢 Publier</button>
                     )}
+                    <button onClick={() => setEmploiModif({
+  id: emploiSelectionne.id,
+  id_classe: emploiSelectionne.id_classe,
+  semaine_debut: emploiSelectionne.semaine_debut,
+})} style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: 8, padding: '4px 12px', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600, fontFamily: 'Segoe UI, sans-serif' }}>
+  ✏️ Modifier
+</button>
                     <button onClick={() => supprimerEmploi(emploiSelectionne.id)} style={{ background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', borderRadius: 8, padding: '4px 12px', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600, fontFamily: 'Segoe UI, sans-serif' }}>🗑️ Supprimer</button>
                   </>
                 )}
